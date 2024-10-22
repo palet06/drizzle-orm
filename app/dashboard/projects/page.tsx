@@ -1,19 +1,35 @@
 import React from "react";
 import ProjectCards from "./_components/ProjectCards";
-//import { db } from "@/configs/db/db";
-//import { revalidatePath } from "next/cache";
-//export type ddv = typeof db._.fullSchema.projects.$inferSelect;
+import db from "@/configs/db/db";
+import { revalidatePath } from "next/cache";
+import { ProjectTableFieldsTypes } from "@/configs/db/schema";
 
+const getProjects = async () => {
+  const result = await db.query.project.findMany({
+    with: {
+      assignedTasks: {
+        with: {
+          assignee: {
+            columns: {
+              name: true,
+              surname: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return result as ProjectTableFieldsTypes[];
+};
 
-
+;
 
 const Projects = async () => {
-  
- 
-
+  const projects = await getProjects();
+  revalidatePath("/", "layout");
   return (
     <div>
-      <ProjectCards />
+      <ProjectCards projects={projects} />
     </div>
   );
 };

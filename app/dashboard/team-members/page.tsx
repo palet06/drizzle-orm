@@ -1,51 +1,61 @@
 import React from "react";
 
 import TeamCards from "./_components/TeamCards";
-import { db } from "@/configs/db/db";
+import db from "@/configs/db/db";
 
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
-import { users } from "@/configs/db/schema";
-
-export type Team = {
-  id: number; // 'serial' primary key
-  userName: string; // 'varchar' (not null)
-  email: string; // 'varchar' (not null)
-  phone: string | null; // 'varchar' (not null)
-  password: string; // 'varchar' (not null)
-  profilePictureUrl?: string | null; // 'varchar' (nullable)
-  isAdmin: boolean | null; // 'boolean' with default value
-  isTeamMember: boolean | null; // 'boolean' with default value
-  role?: string | null; // 'varchar' (nullable)
-  createdDate: Date | null; // 'timestamp' with default value
-  updatedDate: Date | null; // 'timestamp' with default value
-  tasks: {
-    assigneeId:number;
-    createdDate:Date |null;
-    updatedDate:Date | null;
-    id:number;
-    taskId:number | null;    
-    userId:number | null;
-    
-  }[];
-  projects:{
-    userId:number |null;
-    projectId:number | null;
-  }[];
-};
 
 const getTeamMembers = async () => {
-  const members = await db.query.users.findMany({
-    with: { tasks: true, projects: true },
-    where:eq(users.isTeamMember, true)
+  const members = await db.query.user.findMany({
+    with: {
+      tasks: true,
+      projectToUser: true,
+      comments: true,
+      assignedTasks: {
+        with: {
+          assignee: {
+            columns: {
+              isExecutive: false,
+              isTeamMember: false,
+              password: false,
+            },
+          },
+          executive: {
+            columns: {
+              userId: true,
+              name: true,
+              surname: true,
+            },
+          },
+          project: {
+            columns: {
+              projectId: true,
+              projectName: true,
+            },
+          },
+          task: {
+            columns: {
+              taskId: true,
+              title: true,
+              status: true,
+              priority: true,
+            },
+          },
+        },
+      },
+      userRoles: true,
+    },
+    where: (user, { eq }) => eq(user.isTeamMember, true),
   });
 
   return members;
 };
 
+export type teamMemberSelectType = Awaited<ReturnType<typeof getTeamMembers>>;
+
 const TeamMembers = async () => {
   const membersList = await getTeamMembers();
-  
+
   revalidatePath("/", "layout");
 
   return (
