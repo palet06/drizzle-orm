@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "assigned_task" (
 	"executive_id" integer NOT NULL,
 	"task_id" integer NOT NULL,
 	"project_id" integer NOT NULL,
-	"created_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
 	"updated_date" timestamp with time zone,
 	CONSTRAINT "assigned_task_task_id_pk" PRIMARY KEY("task_id")
 );
@@ -16,8 +16,16 @@ CREATE TABLE IF NOT EXISTS "attachment" (
 	"task_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
 	"comment_id" integer NOT NULL,
-	"created_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
 	"updated_date" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "audit_log" (
+	"log_id" serial PRIMARY KEY NOT NULL,
+	"user_id" integer NOT NULL,
+	"activity_type" text NOT NULL,
+	"activity_description" text NOT NULL,
+	"activity_time" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "comment" (
@@ -26,7 +34,15 @@ CREATE TABLE IF NOT EXISTS "comment" (
 	"task_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
 	"attachment_id" integer,
-	"created_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
+	"updated_date" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "permission" (
+	"permission_id" serial PRIMARY KEY NOT NULL,
+	"permission_name" varchar(255) NOT NULL,
+	"permission_description" varchar(500) NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
 	"updated_date" timestamp with time zone
 );
 --> statement-breakpoint
@@ -36,7 +52,7 @@ CREATE TABLE IF NOT EXISTS "project" (
 	"project_description" text,
 	"project_picture_url" varchar(255),
 	"isActive" boolean DEFAULT true,
-	"created_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
 	"updated_date" timestamp with time zone
 );
 --> statement-breakpoint
@@ -44,6 +60,21 @@ CREATE TABLE IF NOT EXISTS "project_to_user" (
 	"project_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
 	CONSTRAINT "project_to_user_user_id_pk" PRIMARY KEY("user_id")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "role" (
+	"role_id" serial PRIMARY KEY NOT NULL,
+	"role_name" varchar(255) NOT NULL,
+	"role_description" varchar(500) NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
+	"updated_date" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "role_permissions" (
+	"permission_id" integer NOT NULL,
+	"role_id" integer NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
+	"updated_date" timestamp with time zone
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "task" (
@@ -55,7 +86,7 @@ CREATE TABLE IF NOT EXISTS "task" (
 	"tags" varchar(255),
 	"start_date" timestamp with time zone DEFAULT now() NOT NULL,
 	"due_date" timestamp with time zone DEFAULT now() NOT NULL,
-	"created_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
 	"updated_date" timestamp with time zone,
 	"user_id" integer,
 	"project_id" integer
@@ -72,7 +103,15 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"isExecutive" boolean DEFAULT false,
 	"isTeamMember" boolean DEFAULT false,
 	"profile_picture_url" varchar(255),
-	"created_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
+	"updated_date" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "user_role" (
+	"user_role_id" serial PRIMARY KEY NOT NULL,
+	"user_id" integer NOT NULL,
+	"role_id" integer NOT NULL,
+	"created_date" timestamp with time zone DEFAULT now(),
 	"updated_date" timestamp with time zone
 );
 --> statement-breakpoint
@@ -108,6 +147,30 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "project_to_user" ADD CONSTRAINT "project_to_user_user_id_user_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("user_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_role_id_role_role_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."role"("role_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_permission_id_permission_permission_id_fk" FOREIGN KEY ("permission_id") REFERENCES "public"."permission"("permission_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "user_role" ADD CONSTRAINT "user_role_user_id_user_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("user_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "user_role" ADD CONSTRAINT "user_role_role_id_role_role_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."role"("role_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
