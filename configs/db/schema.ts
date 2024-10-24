@@ -60,21 +60,15 @@ export const userRelation = relations(user, ({ many }) => ({
   auditLogs: many(auditLog),
 }));
 
-export const projectToUser = pgTable(
-  "project_to_user",
-  {
-    //projectToUserId: serial("project_to_user_id").primaryKey(),
-    projectId: integer("project_id")
-      .notNull()
-      .references(() => project.projectId),
-    userId: integer("user_id")
-      .notNull()
-      .references(() => user.userId),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId] }),
-  })
-);
+export const projectToUser = pgTable("project_to_user", {
+  projectToUserId: serial("project_to_user_id").primaryKey(),
+  projectId: integer("project_id")
+    .notNull()
+    .references(() => project.projectId),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => user.userId),
+});
 
 export const projectToUserRelations = relations(projectToUser, ({ one }) => ({
   project: one(project, {
@@ -94,6 +88,7 @@ export const task = pgTable("task", {
   status: varchar("status", { length: 50 }).default("İnceleniyor").notNull(),
   priority: varchar("priority", { length: 50 }).default("Orta").notNull(),
   tags: varchar("tags", { length: 255 }),
+  isDone: boolean("isDone").default(false),
   startDate: timestamp("start_date", { mode: "date", withTimezone: true })
     .defaultNow()
     .notNull(),
