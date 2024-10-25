@@ -1,0 +1,1 @@
+- app layout a ba scroll olunca top navbar da yukarı gidiyor.

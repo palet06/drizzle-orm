@@ -1,7 +1,7 @@
 import React from "react";
 
 import TeamCards from "./_components/TeamCards";
-import db from "@/configs/db/db";
+//import { db } from "@/configs/db/db";
 import { eq } from "drizzle-orm";
 
 import { revalidatePath } from "next/cache";
@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import { user, project, projectToUser } from "@/configs/db/schema";
 
 const getTeamMembers = async () => {
-  const members = await db.query.user.findMany({
+  const members = await global.db!.query.user.findMany({
     with: {
       tasks: true,
       projectToUser: {
@@ -17,7 +17,6 @@ const getTeamMembers = async () => {
           project: true,
         },
       },
-
       comments: true,
       assignedTasks: {
         with: {
@@ -47,6 +46,7 @@ const getTeamMembers = async () => {
               title: true,
               status: true,
               priority: true,
+              isDone: true,
             },
           },
         },
@@ -59,8 +59,8 @@ const getTeamMembers = async () => {
   return members;
 };
 const getUserProjects = async () => {
-  const userProjects = await db
-    .selectDistinct({
+  const userProjects = await global
+    .db!.selectDistinct({
       GuserId: user.userId,
       username: user.username,
       GprojectId: project.projectId,
@@ -85,11 +85,7 @@ const TeamMembers = async () => {
 
   revalidatePath("/", "layout");
 
-  return (
-    <div>
-      <TeamCards membersList={membersList} userProjects={userProjects} />
-    </div>
-  );
+  return <TeamCards membersList={membersList} userProjects={userProjects} />;
 };
 
 export default TeamMembers;

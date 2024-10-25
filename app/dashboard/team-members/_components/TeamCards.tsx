@@ -15,13 +15,16 @@ const TeamCards = ({
   userProjects: userProjectsSelectType;
 }) => {
   return (
-    <div className="grid sm:grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
       {/* card container */}
-      <div className="rounded-xl  border-black min-w-[400px] max-w-[400px]  shadow-xl">
-        {membersList.length > 0 ? (
-          membersList.map((member, index) => (
-            <div key={index} className="">
-              <div className="flex justify-center items-center  rounded-tl-xl p-3 h-[200px] rounded-tr-xl bg-gradient-to-r from-indigo-500 to-blue-500">
+      {membersList.length > 0 ? (
+        membersList.map((member, index) => (
+          <div
+            key={index}
+            className="rounded-xl  border-black min-w-[400px] max-w-[400px]  shadow-xl"
+          >
+            <div className="">
+              <div className="flex justify-center items-center rounded-tl-xl p-3 h-[200px] rounded-tr-xl bg-gradient-to-r from-indigo-500 to-blue-500">
                 <div>
                   <Image
                     className="rounded-xl border-[1px] border-black  "
@@ -51,28 +54,28 @@ const TeamCards = ({
                   </div>
                 </div>
               </div>
-              <div className="flex  flex-col p-3 relative  ">
+              <div className="flex  flex-col p-3   ">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border shadow-md">
                   <tbody>
-                    <tr className=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th
                         scope="row"
-                        className="px-3 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-3 h-[64px]  font-bold text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         Sorumlu Olduğu Proje(ler)
                       </th>
-                      <div className="flex px-3 py-4 flex-row gap-2 items-center w-ful  justify-center">
+
+                      <ul className="flex flex-col justify-center h-[64px] list-disc">
                         {userProjects.map((up, i) =>
                           up.GuserId === member.userId ? (
-                            <>
-                              <td key={i}>{up.projectName}</td>
-                              {i >= userProjects.length + 1 ? "" : "|"}
-                            </>
+                            <li key={i}>
+                              <td>{up.projectName}</td>
+                            </li>
                           ) : (
                             ""
                           )
                         )}
-                      </div>
+                      </ul>
                     </tr>
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                       <th
@@ -82,7 +85,7 @@ const TeamCards = ({
                         Atanan Görevler
                       </th>
                       <td className="px-6 py-4 w-ful flex justify-center ">
-                        5
+                        <>{member.assignedTasks.length}</>
                       </td>
                     </tr>
                     <tr className="bg-white dark:bg-gray-800">
@@ -93,7 +96,13 @@ const TeamCards = ({
                         Tamamlanan Görevler
                       </th>
                       <td className="px-6 py-4 w-ful flex justify-center ">
-                        3
+                        <>
+                          {
+                            member.assignedTasks?.filter(
+                              (d) => d.task.isDone == true
+                            ).length
+                          }
+                        </>
                       </td>
                     </tr>
                   </tbody>
@@ -108,11 +117,11 @@ const TeamCards = ({
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <h3>Yaızlım Danışmanı Bulunamadı</h3>
-        )}
-      </div>
+          </div>
+        ))
+      ) : (
+        <h3>Yaızlım Danışmanı Bulunamadı</h3>
+      )}
     </div>
   );
 };
