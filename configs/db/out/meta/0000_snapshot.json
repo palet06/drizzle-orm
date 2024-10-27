@@ -1,5 +1,5 @@
 {
-  "id": "f82e3189-6b67-40e6-9020-f6cfc6347f3f",
+  "id": "f7d7a531-cc4d-4034-b897-482611fa0819",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -369,6 +369,12 @@
       "name": "project_to_user",
       "schema": "",
       "columns": {
+        "project_to_user_id": {
+          "name": "project_to_user_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
         "project_id": {
           "name": "project_id",
           "type": "integer",
@@ -411,14 +417,7 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "project_to_user_user_id_pk": {
-          "name": "project_to_user_user_id_pk",
-          "columns": [
-            "user_id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "public.role": {
@@ -565,6 +564,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "isDone": {
+          "name": "isDone",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         },
         "start_date": {
           "name": "start_date",

@@ -57,9 +57,9 @@ CREATE TABLE IF NOT EXISTS "project" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_to_user" (
+	"project_to_user_id" serial PRIMARY KEY NOT NULL,
 	"project_id" integer NOT NULL,
-	"user_id" integer NOT NULL,
-	CONSTRAINT "project_to_user_user_id_pk" PRIMARY KEY("user_id")
+	"user_id" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "role" (
@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS "task" (
 	"status" varchar(50) DEFAULT 'İnceleniyor' NOT NULL,
 	"priority" varchar(50) DEFAULT 'Orta' NOT NULL,
 	"tags" varchar(255),
+	"isDone" boolean DEFAULT false,
 	"start_date" timestamp with time zone DEFAULT now() NOT NULL,
 	"due_date" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_date" timestamp with time zone DEFAULT now(),
