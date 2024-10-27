@@ -1,11 +1,11 @@
 import React from "react";
 import ProjectCards from "./_components/ProjectCards";
-//import db from "@/configs/db/db";
+import {db} from "@/configs/db/db";
 import { revalidatePath } from "next/cache";
 import { ProjectTableFieldsTypes } from "@/configs/db/schema";
 
 const getProjects = async () => {
-  const result = await global.db!.query.project.findMany({
+  const result = await db.query.project.findMany({
     with: {
       assignedTasks: {
         with: {

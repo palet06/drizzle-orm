@@ -1,11 +1,13 @@
-"use client";
+
 
 import React from "react";
 
-import { teamMemberSelectType, userProjectsSelectType } from "../page";
+
 import Image from "next/image";
-import { Dot } from "lucide-react";
+import {  Dot } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { teamMemberSelectType, userProjectsSelectType } from "@/lib/dbactions/index";
 
 const TeamCards = ({
   membersList,
@@ -21,14 +23,14 @@ const TeamCards = ({
         membersList.map((member, index) => (
           <div
             key={index}
-            className="rounded-xl  border-black min-w-[400px] max-w-[400px]  shadow-xl"
+            className="rounded-xl  border-black min-w-[300px] max-w-[350px]  shadow-xl"
           >
             <div className="">
               <div className="flex justify-center items-center rounded-tl-xl p-3 h-[200px] rounded-tr-xl bg-gradient-to-r from-indigo-500 to-blue-500">
                 <div>
                   <Image
                     className="rounded-xl border-[1px] border-black  "
-                    src={member.profilePictureUrl!}
+                    src={member.profilePictureUrl?member.profilePictureUrl:"/profile.jpg"}
                     height={150}
                     width={150}
                     alt="onur-tosun"
@@ -37,7 +39,7 @@ const TeamCards = ({
               </div>
               <div className="w-full">
                 <div className="w-full  flex flex-col p-3">
-                  <h3 className="font-bold text-2xl">
+                  <h3 className="font-bold text-xl">
                     {member.name} {member.surname?.toUpperCase()}
                   </h3>
                   <p className="flex text-sm items-center">
@@ -66,7 +68,7 @@ const TeamCards = ({
                       </th>
 
                       <ul className="flex flex-col justify-center h-[64px] list-disc">
-                        {userProjects.map((up, i) =>
+                        {userProjects?.map((up, i) =>
                           up.GuserId === member.userId ? (
                             <li key={i}>
                               <td>{up.projectName}</td>
@@ -85,7 +87,9 @@ const TeamCards = ({
                         Atanan Görevler
                       </th>
                       <td className="px-6 py-4 w-ful flex justify-center ">
+                     
                         <>{member.assignedTasks.length}</>
+                       
                       </td>
                     </tr>
                     <tr className="bg-white dark:bg-gray-800">
@@ -111,9 +115,11 @@ const TeamCards = ({
                   <div className="border-[1px] bg-black"></div>
                 </div>
                 <div className="w-full py-3">
+                <Link href={`team-members/${member.userId}/assignedTasks`}>
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-violet-600">
                     Ayrıntılar
                   </Button>
+                  </Link>
                 </div>
               </div>
             </div>

@@ -10,7 +10,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="bg-white">
         <Header />
-        <div className="md:ml-64  p-10">{children}</div>
+        <div className="md:ml-64  pt-[80px] pb-[10px] px-[20px] ">{children}</div>
       </div>
     </div>
   );
