@@ -1,3 +1,4 @@
+"use client"
 import {
   Table,
   TableBody,
@@ -10,6 +11,7 @@ import {
 
 import ActionTableButton from "./ActionTableButton";
 import { assignedTaskListType } from "@/lib/dbactions/index";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 export function AssignedTasksList({
   tasklists,
@@ -22,40 +24,46 @@ export function AssignedTasksList({
       <TableHeader>
         <TableRow>
           <TableHead>Görev</TableHead>
-          <TableHead>Durum</TableHead>
-          <TableHead>Öncelik</TableHead>
-          <TableHead className="text-right">Atama Tarihi</TableHead>
-          <TableHead className="text-right">Atayan Kişi</TableHead>
-          <TableHead className="text-right">Tamamlandı Mı?</TableHead>
-          <TableHead className="text-right">İşlem</TableHead>
+          <TableHead className="text-center">Durum</TableHead>
+          <TableHead className="text-center">Öncelik</TableHead>
+          <TableHead className="text-center">Atama Tarihi</TableHead>
+          <TableHead className="text-center">Atayan Kişi</TableHead>
+          <TableHead className="text-center">Tamamlandı Mı?</TableHead>
+          <TableHead className="text-center">İşlem</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {tasklists?.map((task) => (
-          <TableRow  key={task.taskId}>
-            <TableCell 
-            data-twe-toggle="tooltip"
-    
-    data-tip="Some content inside the popover1"
+          <TableRow key={task.taskId}>
+            <TableCell >
               
-            >
-              {task.task.title}
+
+              <div className=" line-clamp-2 w-60" data-tooltip-id={`my-tooltip-${task.taskId}`}>
+                {task.task.title}
+              </div>
+              
+                  
+           
+              <ReactTooltip
+                id={`my-tooltip-${task.taskId}`}
+                place="top"
+                content={task.task.title}
+              />
             </TableCell>
-            <TableCell>{task.task.status}</TableCell>
-            <TableCell>{task.task.priority}</TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-center">{task.task.status}</TableCell>
+            <TableCell className="text-center">{task.task.priority}</TableCell>
+            <TableCell className="text-center">
               {task.createdDate?.toLocaleDateString("tr-TR")}
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-center">
               {task.executive.name} {task.executive.surname}
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-center">
               {task.task.isDone ? "Evet" : "Hayır"}
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell className="text-center">
               <ActionTableButton />
             </TableCell>
-            
           </TableRow>
         ))}
       </TableBody>
