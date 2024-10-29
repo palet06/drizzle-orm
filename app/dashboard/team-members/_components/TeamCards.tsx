@@ -115,7 +115,7 @@ const TeamCards = ({
                   <div className="border-[1px] bg-black"></div>
                 </div>
                 <div className="w-full py-3">
-                <Link href={`team-members/${member.userId}/assignedTasks`}>
+                <Link href={`team-members/${member.userId}`}>
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-violet-600">
                     Ayrıntılar
                   </Button>

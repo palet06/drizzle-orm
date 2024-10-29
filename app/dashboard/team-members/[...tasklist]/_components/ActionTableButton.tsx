@@ -15,8 +15,12 @@ import {
 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
-export function ActionTableButton() {
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function ActionTableButton({taskId,asigneeId}:{taskId:number,asigneeId:number}) {
+ 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,13 +28,16 @@ export function ActionTableButton() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
+        <Link href={`task-details/${taskId}`} >
           <DropdownMenuItem>
             <ReceiptText />
             <span>Ayrıntılar</span>
           </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>
             <UserMinus />
-            <span>Atamayı Kaldır</span>
+            <span>
+              Atamayı Kaldır</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <ArrowLeftRight />
