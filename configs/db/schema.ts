@@ -89,6 +89,7 @@ export const task = pgTable("task", {
   priority: varchar("priority", { length: 50 }).default("Orta").notNull(),
   tags: varchar("tags", { length: 255 }),
   isDone: boolean("isDone").default(false),
+  isActive: boolean("isActive").default(true),
   startDate: timestamp("start_date", { mode: "date", withTimezone: true })
     .defaultNow()
     .notNull(),
