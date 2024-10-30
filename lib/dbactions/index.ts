@@ -37,7 +37,40 @@ export const getAssignedTasks = async (id:number) => {
 };
 
 
+export const getAssignedTaskById = async (id:number) => {
+  const data = await db.query.assignedTask.findFirst({
+
+    with: {
+      
+      assignee: {
+        columns: {
+          userId: true,
+          profilePictureUrl:true,
+          name:true,
+          surname:true,
+        },
+      },
+      executive: {
+        columns: {
+          userId: true,
+          name: true,
+          surname: true,
+        },
+      },
+      task: {
+        columns: {
+          
+          description: false,
+        },
+      },
+    },
+    where: (assignedTask, { eq }) => eq(assignedTask.assigneeId, id),
+  });
+  return data;
+};
+
 export type assignedTaskListType = Awaited<ReturnType<typeof getAssignedTasks>>;
+export type assignedTaskListTypeById = Awaited<ReturnType<typeof getAssignedTaskById>>;
 
 
 
@@ -153,7 +186,7 @@ export const getTeamMembersWithId = async (id:number) => {
 };
 
 export type teamMemberSelectType = Awaited<ReturnType<typeof getTeamMembers>>;
-export type teamMemberWithIdSelectType = Awaited<ReturnType<typeof getTeamMembers>>;
+export type teamMemberWithIdSelectType = Awaited<ReturnType<typeof getTeamMembersWithId>>;
 
 
 
