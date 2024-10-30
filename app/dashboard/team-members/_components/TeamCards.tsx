@@ -100,12 +100,12 @@ const TeamCards = ({
                   </text>
                 </div>
 
-                <div className="flex items-center justify-center flex-wrap gap-2 lg:gap-5">
+                <div className="flex   flex-wrap gap-2 lg:gap-5">
                   <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
                     <span className="text-gray-900 text-base leading-none font-medium">
                       {member.assignedTasks.length}
                     </span>
-                    <span className=" text-xs text-gray-500">Atanan Görev</span>
+                    <span className=" text-xs text-gray-500 ">Atanan </span>
                   </div>
                   <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
                     <span className="text-gray-900 text-base leading-none font-medium">
@@ -115,8 +115,8 @@ const TeamCards = ({
                         ).length
                       }
                     </span>
-                    <span className=" text-xs text-gray-500">
-                      Tamamlanan Görev
+                    <span className=" text-xs text-gray-500 ">
+                      Tamamlanan 
                     </span>
                   </div>
                   <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">

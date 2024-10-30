@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
+
 import {
-  assignedTaskListType,
+ 
   teamMemberWithIdSelectType,
 } from "@/lib/dbactions";
 import { ContactRound, Mail } from "lucide-react";
@@ -9,10 +9,10 @@ import React from "react";
 
 const TeamHeader = ({
   teamMember,
-  tasklists,
+
 }: {
   teamMember: teamMemberWithIdSelectType;
-  tasklists: assignedTaskListType;
+
 }) => {
   return (
     <>
@@ -58,20 +58,21 @@ const TeamHeader = ({
         </div>
       </div> */}
 
-      <main className="grow content pt-5">
-        <div className="bg-center bg-cover bg-no-repeat hero-bg">
+      <main className="grow ">
+        
           <div className="flex-grow w-full ps-[1.25rem] pe-[1.25rem]">
             <div className="flex flex-col items-center gap-2 lg:gap-3.5 py-4 lg:pt-5 lg:pb-10">
               <Image
                 height={150}
                 width={150}
                 alt="profile pic"
-                src={"/onurtosunprofile.jpeg"}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+                src={teamMember?.profilePictureUrl?.toString()!}
                 className="rounded-full border-[3px] border-green-500 size-[100px] shrink-0"
               />
               <div className="flex items-center gap-1.5">
                 <div className="text-lg leading-5 font-semibold text-gray-900">
-                  Onur TOSUN
+                  {teamMember?.name} {teamMember?.surname?.toUpperCase()}
                 </div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -87,11 +88,15 @@ const TeamHeader = ({
                   ></path>
                 </svg>
               </div>
-              <div className="flex flex-wrap justify-center gap-2 lg:gap-4.5 text-sm">
+              <div className="flex flex-wrap justify-center gap-2 lg:gap-4 text-sm">
                 <div className="flex gap-[0.175rem] items-center">
                   <ContactRound className="size-4 text-gray-600" />
                   <span className="text-gray-600 font-medium">
-                    onr - Ekim 2024
+                  {teamMember?.username?.toString()} -{" "}
+                    {teamMember?.createdDate?.toLocaleString("tr-TR", {
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
 
@@ -103,13 +108,13 @@ const TeamHeader = ({
                     className="text-gray-600 font-medium hover:text-primary"
                     rel="noreferrer"
                   >
-                    onur.tosun@csgb.gov.tr
+                    {teamMember?.email}
                   </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+       
       </main>
     </>
   );

@@ -27,7 +27,7 @@ export function ActionTableButton({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">...</Button>
+        <Button className="border border-primaryMavi  " variant="outline">...</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
