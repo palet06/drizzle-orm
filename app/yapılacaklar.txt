@@ -2,3 +2,6 @@
 
 
 https://keenthemes.com/metronic/tailwind/react/demo1/public-profile/profiles/default adresinden bak
+
+
+teamMember cardlardaki projeler başlığı altındakileri ul yap ve lileri ya disc yap ya da number lı yap
