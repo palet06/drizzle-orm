@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-export function ActionTableButton({
+function ActionTableButton({
   taskId,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   asigneeId,
@@ -27,7 +27,9 @@ export function ActionTableButton({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="border border-primaryMavi  " variant="outline">...</Button>
+        <Button className="border border-primaryMavi  " variant="outline">
+          ...
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>

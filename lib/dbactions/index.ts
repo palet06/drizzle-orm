@@ -1,21 +1,22 @@
-
-import { project, projectToUser, user } from "@/configs/db/schema";
+import {
+  assignedTask,
+  project,
+  projectToUser,
+  user,
+} from "@/configs/db/schema";
 
 import { eq } from "drizzle-orm";
-import {db} from "@/configs/db/db"
+import { db } from "@/configs/db/db";
 
-
-
-
-export const getAssignedTasks = async (id:number) => {
+export const getAssignedTasks = async (id: number) => {
   const data = await db.query.assignedTask.findMany({
     with: {
       assignee: {
         columns: {
           userId: true,
-          profilePictureUrl:true,
-          name:true,
-          surname:true,
+          profilePictureUrl: true,
+          name: true,
+          surname: true,
         },
       },
       executive: {
@@ -36,18 +37,15 @@ export const getAssignedTasks = async (id:number) => {
   return data;
 };
 
-
-export const getAssignedTaskById = async (id:number) => {
+export const getAssignedTaskById = async (id: number) => {
   const data = await db.query.assignedTask.findFirst({
-
     with: {
-      
       assignee: {
         columns: {
           userId: true,
-          profilePictureUrl:true,
-          name:true,
-          surname:true,
+          profilePictureUrl: true,
+          name: true,
+          surname: true,
         },
       },
       executive: {
@@ -59,7 +57,6 @@ export const getAssignedTaskById = async (id:number) => {
       },
       task: {
         columns: {
-          
           description: false,
         },
       },
@@ -70,15 +67,14 @@ export const getAssignedTaskById = async (id:number) => {
 };
 
 export type assignedTaskListType = Awaited<ReturnType<typeof getAssignedTasks>>;
-export type assignedTaskListTypeById = Awaited<ReturnType<typeof getAssignedTaskById>>;
-
-
-
+export type assignedTaskListTypeById = Awaited<
+  ReturnType<typeof getAssignedTaskById>
+>;
 
 export const getTeamMembers = async () => {
   const members = await db.query.user.findMany({
-    columns:{
-      password:false
+    columns: {
+      password: false,
     },
     with: {
       tasks: true,
@@ -130,10 +126,10 @@ export const getTeamMembers = async () => {
   return members;
 };
 
-export const getTeamMembersWithId = async (id:number) => {
+export const getTeamMembersWithId = async (id: number) => {
   const member = await db.query.user.findFirst({
-    columns:{
-      password:false
+    columns: {
+      password: false,
     },
     with: {
       tasks: true,
@@ -179,20 +175,21 @@ export const getTeamMembersWithId = async (id:number) => {
       },
       userRoles: true,
     },
-    where: (user, { eq ,and}) => and( eq(user.userId,id), eq(user.isTeamMember, true)),
+    where: (user, { eq, and }) =>
+      and(eq(user.userId, id), eq(user.isTeamMember, true)),
   });
 
   return member;
 };
 
 export type teamMemberSelectType = Awaited<ReturnType<typeof getTeamMembers>>;
-export type teamMemberWithIdSelectType = Awaited<ReturnType<typeof getTeamMembersWithId>>;
-
-
-
+export type teamMemberWithIdSelectType = Awaited<
+  ReturnType<typeof getTeamMembersWithId>
+>;
 
 export const getUserProjects = async () => {
-  const userProjects = await db.selectDistinct({
+  const userProjects = await db
+    .selectDistinct({
       GuserId: user.userId,
       username: user.username,
       GprojectId: project.projectId,
@@ -205,7 +202,35 @@ export const getUserProjects = async () => {
   return userProjects;
 };
 
-
 export type userProjectsSelectType = Awaited<
   ReturnType<typeof getUserProjects>
 >;
+
+export const assignTaskToMember = async (
+  taskId: number,
+  assigneeId: number,
+  executiveId: number,
+  projectId: number
+) => {
+  const added = await db.insert(assignedTask).values({
+    taskId: taskId,
+    assigneeId: assigneeId,
+    executiveId: executiveId,
+    projectId: projectId,
+  });
+
+  return added;
+};
+
+export const getAllProjects = async () => {
+  const res = db.query.project.findMany();
+  return res;
+};
+export type getAllProjectsType = Awaited<ReturnType<typeof getAllProjects>>;
+
+export const getAllTaskList = async () => {
+  const res = db.query.assignedTask.findMany();
+  return res;
+};
+
+export type getAllTaskListType = Awaited<ReturnType<typeof getAllTaskList>>;

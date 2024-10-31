@@ -84,24 +84,20 @@ const TeamCards = ({
                   </span>
 
                   <text className="text-gray-500">
-                    {userProjects?.map((up, i) =>
-                      up.GuserId === member.userId
-                        ? `${up.projectName} ${
-                            userProjects.filter(
-                              (a) => a.GuserId === member.userId
-                            ).length %
-                              i >
-                            0
-                              ? ""
-                              : "|"
-                          }  `
-                        : ""
-                    )}
+                    <ul className="list-disc flex gap-6">
+                      {userProjects?.map((up, i) =>
+                        up.GuserId == member.userId ? (
+                          <li key={i}>{up.projectName}</li>
+                        ) : (
+                          <span key={i} className="hidden"></span>
+                        )
+                      )}
+                    </ul>
                   </text>
                 </div>
 
-                <div className="flex   flex-wrap gap-2 lg:gap-5">
-                  <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
+                <div className="flex flex-wrap gap-2 lg:gap-5 items-center justify-center">
+                  <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center ">
                     <span className="text-gray-900 text-base leading-none font-medium">
                       {member.assignedTasks.length}
                     </span>
@@ -115,9 +111,7 @@ const TeamCards = ({
                         ).length
                       }
                     </span>
-                    <span className=" text-xs text-gray-500 ">
-                      Tamamlanan 
-                    </span>
+                    <span className=" text-xs text-gray-500 ">Tamamlanan</span>
                   </div>
                   <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
                     <span className="text-gray-900 text-base leading-none font-medium">

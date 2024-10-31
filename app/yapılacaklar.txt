@@ -1,7 +1,12 @@
-- app layout a ba scroll olunca top navbar da yukarı gidiyor.
+- app layout a ba scroll olunca top navbar da yukarı gidiyor. = tamam
 
 
 https://keenthemes.com/metronic/tailwind/react/demo1/public-profile/profiles/default adresinden bak
 
 
-teamMember cardlardaki projeler başlığı altındakileri ul yap ve lileri ya disc yap ya da number lı yap
+teamMember cardlardaki projeler başlığı altındakileri ul yap ve lileri ya disc yap ya da number lı yap = tamam
+
+
+
+
+
